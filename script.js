@@ -1,30 +1,43 @@
-const Gameboard = (function () {
+const Gameboard = function () {
 
   // Use nested loops to create a 3x3 array
   // One array with 3 rows--arrays--with 3 cells each
   const rows = 3;
   const columns = 3;
   const board = [];
-  for ( i = 0; i < rows; i++ ) {
+  for (let i = 0; i < rows; i++ ) {
     board[i] = [];
-    for ( j = 0; j < columns; j++ ) {
+    for (let j = 0; j < columns; j++ ) {
       board[i].push(makeCell());
     }
+  }
+
+  const markSpot = (row, column, player) => {
+    let marked = false;
+    const currentSpot = board[row][column].getValue();
+    if (currentSpot === 0) {
+      board[row][column].addMark(player);
+      marked = true;
+    } else {
+      console.log('That spot is taken!');
+    }
+    return marked;
   }
 
   const getBoard = () => board;
 
   const printBoard = () => {
-    board.map((row) => row.map((cell) => cell.getValue()));
+    const boardWithMarks = board.map((row) => row.map((cell) => cell.getValue()));
     console.log(boardWithMarks);
   }
 
   return {
     getBoard,
     printBoard,
+    markSpot,
   }
 
-})();
+};
 
 function makeCell() {
   let value = 0;
@@ -56,13 +69,16 @@ function gameController (
   const board = Gameboard();
 
   const players = [
+    // Set markers to values for easier win condition check with math
+    // A win for p2 will be a total of 6, for p1 a total of 15
+    // No other combination will reach these totals
     {
       name: playerOneName,
-      marker: 'X',
+      marker: 5,
     },
     {
       name: playerTwoName,
-      marker: 'O',
+      marker: 2,
     },
   ];
 
@@ -76,6 +92,63 @@ function gameController (
 
   const printNewRound = () => {
     board.printBoard();
+    console.log(`${getActivePlayer().name}'s turn.`);
   }
+
+  const promptPlayer = () => {
+    const playerColumn = parseInt(prompt(`${getActivePlayer().name}, select a column.`));
+    const playerRow = parseInt(prompt(`${getActivePlayer().name}, select a row.`));
+    return {playerColumn, playerRow};
+  }
+
+  const checkForWin = () => {
+    const board = Gameboard().getBoard();
+    const marker = getActivePlayer().marker;
+    const winningScore = marker * 3;
+    let winner = false;
+    // horizontals
+    for (let i = 0; i < 3; i++) {
+      let rowTotal = 0;
+      let colTotal = 0;
+      for (let j = 0; j < 3; j++) {
+        rowTotal += board[i][j].getValue();
+        colTotal += board[j][i].getValue();
+        if (rowTotal == winningScore || colTotal == winningScore) {
+          winner = true;
+          return winner;
+        }
+      }
+    }
+  }
+
+  const playRound = () => {
+    do {
+      const { playerRow, playerColumn } = promptPlayer();
+      console.log(
+        `Marking spot with ${getActivePlayer().name}'s symbol...`
+      );
+      if (board.markSpot(playerColumn, playerRow, getActivePlayer().marker)) {
+        break;
+      };
+    } while (true);
+
+    if (checkForWin()) {
+      return console.log(`${getActivePlayer().name}, you have won!`);
+    };
+
+    switchPlayerTurn();
+    printNewRound();
+    playRound();
+  };
+
+  printNewRound();
+  playRound();
+
+  return {
+    playRound,
+    getActivePlayer,
+  };
 }
+
+const game = gameController();
 
