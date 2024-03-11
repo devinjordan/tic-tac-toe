@@ -110,17 +110,18 @@ function gameController (
     // horizontals + verticals
     for (let i = 0; i < 3; i++) {
       let rowTotal = 0;
-      // let colTotal = 0;  
+      let colTotal = 0;  
       for (let j = 0; j < 3; j++) {
         rowTotal += currentBoard[i][j].getValue();
-        // colTotal += board[j][i].getValue();
-        if (rowTotal == winningScore) {
+        colTotal += currentBoard[j][i].getValue();
+        if (rowTotal == winningScore || colTotal == winningScore) {
           winner = true;
           return winner;
         }
       }
+      // console.log('rt: ' + rowTotal, 'ct: ' + colTotal);
+
     }
-    // console.log('rt: ' + rowTotal, 'ct: ' + colTotal);
   }
 
   const playRound = () => {
