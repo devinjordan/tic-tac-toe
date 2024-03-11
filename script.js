@@ -159,7 +159,7 @@ function gameController (
       console.log(
         `Marking spot with ${getActivePlayer().name}'s symbol...`
       );
-      if (board.markSpot(playerColumn, playerRow, getActivePlayer().marker)) {
+      if (board.markSpot(playerRow, playerColumn, getActivePlayer().marker)) {
         break;
       };
     } while (true);
@@ -177,15 +177,16 @@ function gameController (
 
     switchPlayerTurn();
     printNewRound();
-    playRound();
+    // playRound();
   };
 
   printNewRound();
-  playRound();
+  // playRound();
 
   return {
     playRound,
     getActivePlayer,
+    getBoard: board.getBoard,
   };
 }
 
@@ -194,6 +195,8 @@ function ScreenController () {
 
   const boardDiv = document.querySelector('.game-board');
   const resultsArea = document.querySelector('.results-area');
+  const activePlayer = game.getActivePlayer();
+
 
   const updateScreen = () => {
     // clear the board
@@ -202,7 +205,6 @@ function ScreenController () {
 
     // get the latest version of the board with player input
     const board = game.getBoard();
-    const activePlayer = game.getActivePlayer();
 
     // display the updated board
     board.forEach((row, rowIndex) => {
@@ -217,11 +219,19 @@ function ScreenController () {
       })
     })
   }
+
+  function clickHandlerBoard(e) {
+    const selectedRow = e.target.dataset.row;
+    const selectedCol = e.target.dataset.column;
+  
+    game.playRound(selectedRow, selectedCol, activePlayer);
+    updateScreen();
+  }
+  boardDiv.addEventListener('click', clickHandlerBoard);
+
+  // initial refresh
+  updateScreen();
+
 };
 
-function clickHandlerBoard(e) {
-  const selectedRow = e.target.dataset.row;
-  const selectedCol = e.target.dataset.column;
-
-  game.playRound(selectedRow, selectedCol, activePlayer);
-}
+ScreenController();
