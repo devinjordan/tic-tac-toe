@@ -97,11 +97,11 @@ function gameController (
     console.log(`${getActivePlayer().name}'s turn.`);
   }
 
-  const promptPlayer = () => {
-    const playerColumn = parseInt(prompt(`${getActivePlayer().name}, select a column.`));
-    const playerRow = parseInt(prompt(`${getActivePlayer().name}, select a row.`));
-    return {playerColumn, playerRow};
-  }
+  // const promptPlayer = () => {
+  //   const playerColumn = parseInt(prompt(`${getActivePlayer().name}, select a column.`));
+  //   const playerRow = parseInt(prompt(`${getActivePlayer().name}, select a row.`));
+  //   return {playerColumn, playerRow};
+  // }
 
   const checkForWin = () => {
     const marker = getActivePlayer().marker;
@@ -153,9 +153,9 @@ function gameController (
     //   }
     // }
 
-  const playRound = () => {
+  const playRound = (playerRow, playerColumn) => {
     do {
-      const { playerRow, playerColumn } = promptPlayer();
+      // const { playerRow, playerColumn } = promptPlayer();
       console.log(
         `Marking spot with ${getActivePlayer().name}'s symbol...`
       );
@@ -189,5 +189,39 @@ function gameController (
   };
 }
 
-const game = gameController();
+function ScreenController () {
+  const game = gameController();
 
+  const boardDiv = document.querySelector('.game-board');
+  const resultsArea = document.querySelector('.results-area');
+
+  const updateScreen = () => {
+    // clear the board
+    boardDiv.textContent = '';
+    resultsArea.textContent = '';
+
+    // get the latest version of the board with player input
+    const board = game.getBoard();
+    const activePlayer = game.getActivePlayer();
+
+    // display the updated board
+    board.forEach((row, rowIndex) => {
+      row.forEach((cell, colIndex) => {
+        const cellButton = document.createElement('button');
+        cellButton.classList.add('cell');
+
+        cellButton.dataset.row = rowIndex;
+        cellButton.dataset.column = colIndex;
+        cellButton.textContent = cell.getValue();
+        boardDiv.appendChild(cellButton);
+      })
+    })
+  }
+};
+
+function clickHandlerBoard(e) {
+  const selectedRow = e.target.dataset.row;
+  const selectedCol = e.target.dataset.column;
+
+  game.playRound(selectedRow, selectedCol, activePlayer);
+}
