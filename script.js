@@ -67,6 +67,7 @@ function gameController (
   playerTwoName = "Player O",
 ) {
   const board = Gameboard();
+  const currentBoard = board.getBoard();
 
   const players = [
     // Set markers to values for easier win condition check with math
@@ -102,8 +103,6 @@ function gameController (
   }
 
   const checkForWin = () => {
-    const board = Gameboard().getBoard();
-    Gameboard().printBoard();
     const marker = getActivePlayer().marker;
     const winningScore = marker * 3;
     let winner = false;
@@ -113,7 +112,7 @@ function gameController (
       let rowTotal = 0;
       // let colTotal = 0;  
       for (let j = 0; j < 3; j++) {
-        rowTotal += board[i][j].getValue();
+        rowTotal += currentBoard[i][j].getValue();
         // colTotal += board[j][i].getValue();
         if (rowTotal == winningScore) {
           winner = true;
