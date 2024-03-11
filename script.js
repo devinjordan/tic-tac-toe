@@ -120,8 +120,21 @@ function gameController (
         }
       }
       // console.log('rt: ' + rowTotal, 'ct: ' + colTotal);
-
     }
+
+    // diagonals
+    const forward = currentBoard[0][0].getValue()
+    + currentBoard[1][1].getValue()
+    + currentBoard[2][2].getValue();
+
+    const backward = currentBoard[0][2].getValue()
+    + currentBoard[1][1].getValue()
+    + currentBoard[2][0].getValue();
+
+    if (forward == winningScore || backward == winningScore) {
+      winner = true;
+      return winner;
+    };
   }
 
   const playRound = () => {
