@@ -68,6 +68,7 @@ function gameController (
 ) {
   const board = Gameboard();
   const currentBoard = board.getBoard();
+  let turnCounter = 0;
 
   const players = [
     // Set markers to values for easier win condition check with math
@@ -137,6 +138,21 @@ function gameController (
     };
   }
 
+  // Refactored this into the turn counter
+    // const checkForTie = () => {
+    //   let tie = false;
+    //   let boardTotal = 0;
+    //   for (let i = 0; i < 3; i++) {
+    //     for (let j = 0; j < 3; j++) {
+    //       boardTotal += currentBoard[i][j].getValue();
+    //     }
+    //   }
+    //   if (boardTotal > 28) {
+    //     tie = true;
+    //     return tie;
+    //   }
+    // }
+
   const playRound = () => {
     do {
       const { playerRow, playerColumn } = promptPlayer();
@@ -150,7 +166,14 @@ function gameController (
 
     if (checkForWin()) {
       return console.log(`${getActivePlayer().name}, you have won!`);
-    };
+    } else {
+      turnCounter++;
+    }
+    console.log(turnCounter);
+
+    if (turnCounter == 9) {
+      return console.log('Tie game!');
+    }
 
     switchPlayerTurn();
     printNewRound();
