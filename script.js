@@ -101,10 +101,13 @@ function gameController (
     return {playerColumn, playerRow};
   }
 
-  const checkForWin = (board) => {
+  const checkForWin = () => {
+    const board = Gameboard().getBoard();
+    Gameboard().printBoard();
     const marker = getActivePlayer().marker;
     const winningScore = marker * 3;
     let winner = false;
+
     // horizontals + verticals
     for (let i = 0; i < 3; i++) {
       let rowTotal = 0;
@@ -132,7 +135,7 @@ function gameController (
       };
     } while (true);
 
-    if (checkForWin(board)) {
+    if (checkForWin()) {
       return console.log(`${getActivePlayer().name}, you have won!`);
     };
 
