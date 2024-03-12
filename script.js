@@ -166,19 +166,26 @@ function gameController (
       };
     } while (true);
 
+    let results = {
+      win: false,
+      tie: false,
+      player: activePlayer.name,
+    }
+
     if (checkForWin()) {
-      return console.log(`${getActivePlayer().name}, you have won!`);
+      results.win = true;
     } else {
       turnCounter++;
     }
     console.log(turnCounter);
 
     if (turnCounter == 9) {
-      return console.log('Tie game!');
+      results.tie = true;
     }
 
     switchPlayerTurn();
     printNewRound();
+    return results;
     // playRound();
   };
 
@@ -198,7 +205,7 @@ function ScreenController () {
 
   const boardDiv = document.querySelector('.game-board');
   const resultsArea = document.querySelector('.results-area');
-  let activePlayer = game.getActivePlayer();
+  // let activePlayer = game.getActivePlayer();
 
 
   const updateScreen = () => {
@@ -226,23 +233,28 @@ function ScreenController () {
   function clickHandlerBoard(e) {
     const selectedRow = e.target.dataset.row;
     const selectedCol = e.target.dataset.column;
+
+    let result = game.playRound(selectedRow, selectedCol, game.getActivePlayer());
     
-    game.playRound(selectedRow, selectedCol, activePlayer);
+    if (result.win == true) {
+      console.log(`${result.player}, you have won!`);
+
+    } else if (result.tie == true) {
+      console.log('Tie game!');
+    };
     updateScreen();
   }
   boardDiv.addEventListener('click', clickHandlerBoard);
 
-  // initial refresh
-  // const xButton = document.getElementById('X');
-  // const oButton = document.getElementById('O');
+  // player marker selection and load game board
   const selectionButtons = document.querySelectorAll('.selector');
   selectionButtons.forEach((button) => {
     button.addEventListener('click', () => {
       if (button.id == 'X') {
-        activePlayer.marker = 'X';
+        game.players[0].marker = 'X';
         game.players[1].marker = 'O';
       } else {
-        activePlayer.marker = 'O';
+        game.players[0].marker = 'O';
         game.players[1].marker = 'X';
       }
       updateScreen();
