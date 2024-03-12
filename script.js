@@ -161,6 +161,8 @@ function gameController (
       );
       if (board.markSpot(playerRow, playerColumn, getActivePlayer().marker)) {
         break;
+      } else {
+        return;
       };
     } while (true);
 
@@ -223,7 +225,7 @@ function ScreenController () {
   function clickHandlerBoard(e) {
     const selectedRow = e.target.dataset.row;
     const selectedCol = e.target.dataset.column;
-  
+    
     game.playRound(selectedRow, selectedCol, activePlayer);
     updateScreen();
   }
