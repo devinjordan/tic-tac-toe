@@ -190,6 +190,20 @@ function gameController (
     // playRound();
   };
 
+  const reset = () => {
+    turnCounter = 0;
+    // playRound.results.win = false;
+    // playRound.results.tie = false;
+    activePlayer = players[0];
+    // const newBoard = Gameboard();
+    const currentBoard = board.getBoard();
+    currentBoard.forEach((row) => {
+      row.forEach((cell) =>{
+        cell.addMark(0);
+      })
+    })
+  }
+
   // printNewRound();
   // playRound();
 
@@ -198,6 +212,7 @@ function gameController (
     playRound,
     getActivePlayer,
     getBoard: board.getBoard,
+    reset,
   };
 }
 
@@ -212,7 +227,7 @@ function ScreenController () {
   const updateScreen = () => {
     // clear the board
     boardDiv.textContent = '';
-    resultsArea.textContent = '';
+    // resultsArea.textContent = '';
 
     // get the latest version of the board with player input
     const board = game.getBoard();
@@ -240,15 +255,30 @@ function ScreenController () {
     // inform win and reset
     if (result.win == true) {
       console.log(`${result.player}, you have won!`);
+      addResetButton();
       boardDiv.removeEventListener('click', clickHandlerBoard);
 
     } else if (result.tie == true) {
       console.log('Tie game!');
+      addResetButton();
       boardDiv.removeEventListener('click', clickHandlerBoard);
     };
     updateScreen();
   }
   boardDiv.addEventListener('click', clickHandlerBoard);
+
+  function addResetButton () {
+    const reset = document.createElement('button');
+    reset.classList.add('reset');
+    reset.textContent = 'Play again?';
+    reset.addEventListener('click', () => {
+      game.reset();
+      updateScreen();
+      boardDiv.addEventListener('click', clickHandlerBoard);
+      resultsArea.removeChild(reset);
+    });
+    resultsArea.appendChild(reset);
+  }
 
   // player marker selection and load game board
   const selectionButtons = document.querySelectorAll('.selector');
