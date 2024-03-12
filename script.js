@@ -239,6 +239,8 @@ function ScreenController () {
     
     if (result.win == true) {
       console.log(`${result.player}, you have won!`);
+      boardDiv.removeEventListener('click', clickHandlerBoard);
+      boardDiv.textContent = '';
 
     } else if (result.tie == true) {
       console.log('Tie game!');
