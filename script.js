@@ -244,6 +244,7 @@ function ScreenController () {
 
     } else if (result.tie == true) {
       console.log('Tie game!');
+      boardDiv.removeEventListener('click', clickHandlerBoard);
     };
     updateScreen();
   }
@@ -262,7 +263,7 @@ function ScreenController () {
       }
       updateScreen();
     });
-  })
+  });
 
 };
 
