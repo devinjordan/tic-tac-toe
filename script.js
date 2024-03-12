@@ -237,10 +237,10 @@ function ScreenController () {
 
     let result = game.playRound(selectedRow, selectedCol, game.getActivePlayer());
     
+    // inform win and reset
     if (result.win == true) {
       console.log(`${result.player}, you have won!`);
       boardDiv.removeEventListener('click', clickHandlerBoard);
-      boardDiv.textContent = '';
 
     } else if (result.tie == true) {
       console.log('Tie game!');
