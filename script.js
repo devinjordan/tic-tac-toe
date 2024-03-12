@@ -76,11 +76,11 @@ function gameController (
     // No other combination will reach these totals
     {
       name: playerOneName,
-      marker: 5,
+      marker: '',
     },
     {
       name: playerTwoName,
-      marker: 2,
+      marker: '',
     },
   ];
 
@@ -105,16 +105,16 @@ function gameController (
 
   const checkForWin = () => {
     const marker = getActivePlayer().marker;
-    const winningScore = marker * 3;
+    const winningScore = marker.repeat(3);
     let winner = false;
-
     // horizontals + verticals
     for (let i = 0; i < 3; i++) {
-      let rowTotal = 0;
-      let colTotal = 0;  
+      let rowTotal = '';
+      let colTotal = '';  
       for (let j = 0; j < 3; j++) {
         rowTotal += currentBoard[i][j].getValue();
         colTotal += currentBoard[j][i].getValue();
+        console.log(winningScore, rowTotal, colTotal);
         if (rowTotal == winningScore || colTotal == winningScore) {
           winner = true;
           return winner;
@@ -182,10 +182,11 @@ function gameController (
     // playRound();
   };
 
-  printNewRound();
+  // printNewRound();
   // playRound();
 
   return {
+    players,
     playRound,
     getActivePlayer,
     getBoard: board.getBoard,
@@ -197,7 +198,7 @@ function ScreenController () {
 
   const boardDiv = document.querySelector('.game-board');
   const resultsArea = document.querySelector('.results-area');
-  const activePlayer = game.getActivePlayer();
+  let activePlayer = game.getActivePlayer();
 
 
   const updateScreen = () => {
@@ -232,7 +233,21 @@ function ScreenController () {
   boardDiv.addEventListener('click', clickHandlerBoard);
 
   // initial refresh
-  updateScreen();
+  // const xButton = document.getElementById('X');
+  // const oButton = document.getElementById('O');
+  const selectionButtons = document.querySelectorAll('.selector');
+  selectionButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      if (button.id == 'X') {
+        activePlayer.marker = 'X';
+        game.players[1].marker = 'O';
+      } else {
+        activePlayer.marker = 'O';
+        game.players[1].marker = 'X';
+      }
+      updateScreen();
+    });
+  })
 
 };
 
