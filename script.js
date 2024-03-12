@@ -63,8 +63,8 @@ function newPlayer (marker) {
 };
 
 function gameController (
-  playerOneName = "Player X",
-  playerTwoName = "Player O",
+  playerOneName = "Player 1",
+  playerTwoName = "Player 2",
 ) {
   const board = Gameboard();
   const currentBoard = board.getBoard();
@@ -94,7 +94,7 @@ function gameController (
 
   const printNewRound = () => {
     board.printBoard();
-    console.log(`${getActivePlayer().name}'s turn.`);
+    console.log(`${activePlayer.name}'s turn.`);
   }
 
   // const promptPlayer = () => {
@@ -157,9 +157,9 @@ function gameController (
     do {
       // const { playerRow, playerColumn } = promptPlayer();
       console.log(
-        `Marking spot with ${getActivePlayer().name}'s symbol...`
+        `Marking spot with ${activePlayer.name}'s symbol...`
       );
-      if (board.markSpot(playerRow, playerColumn, getActivePlayer().marker)) {
+      if (board.markSpot(playerRow, playerColumn, activePlayer.marker)) {
         break;
       } else {
         return;
@@ -182,9 +182,10 @@ function gameController (
     if (turnCounter == 9) {
       results.tie = true;
     }
-
-    switchPlayerTurn();
-    printNewRound();
+    if (results.win == false && results.tie == false) {
+      switchPlayerTurn();
+      printNewRound();
+    }
     return results;
     // playRound();
   };
