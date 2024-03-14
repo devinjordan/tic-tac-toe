@@ -238,7 +238,7 @@ function ScreenController () {
     // inform win and reset
     if (result.win == true) {
       console.log(`${result.player.name}, you have won!`);
-      addResetButton();
+      addResetButton(result.player);
       boardDiv.removeEventListener('click', clickHandlerBoard);
       updateScore(result.player);
 
@@ -264,7 +264,12 @@ function ScreenController () {
     }
   }
 
-  function addResetButton () {
+  function addResetButton (player) {
+    const congrats = document.createElement('h2');
+    congrats.id = 'congrats';
+    congrats.textContent = `${player.name}, you won!`;
+    resultsArea.appendChild(congrats);
+
     const reset = document.createElement('button');
     reset.classList.add('reset');
     reset.textContent = 'Play again?';
@@ -273,6 +278,7 @@ function ScreenController () {
       updateScreen();
       boardDiv.addEventListener('click', clickHandlerBoard);
       resultsArea.removeChild(reset);
+      resultsArea.removeChild(congrats);
     });
     resultsArea.appendChild(reset);
   }
