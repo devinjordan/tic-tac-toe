@@ -90,7 +90,6 @@ function gameController (
       for (let j = 0; j < 3; j++) {
         rowTotal += currentBoard[i][j].getValue();
         colTotal += currentBoard[j][i].getValue();
-        console.log(winningScore, rowTotal, colTotal);
         if (rowTotal == winningScore || colTotal == winningScore) {
           winner = true;
           return winner;
@@ -115,10 +114,6 @@ function gameController (
 
   const playRound = (playerRow, playerColumn) => {
     do {
-      // const { playerRow, playerColumn } = promptPlayer();
-      console.log(
-        `Marking spot with ${activePlayer.name}'s symbol...`
-      );
       if (board.markSpot(playerRow, playerColumn, activePlayer.marker)) {
         break;
       } else {
@@ -137,7 +132,6 @@ function gameController (
     } else {
       turnCounter++;
     }
-    console.log(turnCounter);
 
     if (turnCounter == 9) {
       results.tie = true;
@@ -208,7 +202,6 @@ function ScreenController () {
     
     // inform win and reset
     if (result.win == true) {
-      console.log(`${result.player.name}, you have won!`);
       addResetButton(result.player);
       boardDiv.removeEventListener('click', clickHandlerBoard);
       updateScore(result.player);
