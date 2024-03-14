@@ -270,6 +270,7 @@ function ScreenController () {
   }
 
   // player marker selection and load game board
+  const selectDiv = document.querySelector('.selection');
   const selectionButtons = document.querySelectorAll('.selector');
   selectionButtons.forEach((button) => {
     button.addEventListener('click', () => {
@@ -281,6 +282,7 @@ function ScreenController () {
         game.players[1].marker = 'X';
       }
       updateScreen();
+      selectDiv.style.height = '0px';
     });
   });
 
