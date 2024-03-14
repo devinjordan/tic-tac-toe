@@ -1,5 +1,4 @@
 const Gameboard = function () {
-
   // Use nested loops to create a 3x3 array
   // One array with 3 rows--arrays--with 3 cells each
   const rows = 3;
@@ -24,14 +23,13 @@ const Gameboard = function () {
     return marked;
   }
 
+  // useful for DOM manipulation in later functions
   const getBoard = () => board;
-
 
   return {
     getBoard,
     markSpot,
   }
-
 };
 
 function makeCell() {
@@ -81,13 +79,6 @@ function gameController (
 
   const getActivePlayer = () => activePlayer;
 
-
-  // const promptPlayer = () => {
-  //   const playerColumn = parseInt(prompt(`${getActivePlayer().name}, select a column.`));
-  //   const playerRow = parseInt(prompt(`${getActivePlayer().name}, select a row.`));
-  //   return {playerColumn, playerRow};
-  // }
-
   const checkForWin = () => {
     const marker = getActivePlayer().marker;
     const winningScore = marker.repeat(3);
@@ -105,7 +96,6 @@ function gameController (
           return winner;
         }
       }
-      // console.log('rt: ' + rowTotal, 'ct: ' + colTotal);
     }
 
     // diagonals
@@ -122,21 +112,6 @@ function gameController (
       return winner;
     };
   }
-
-  // Refactored this into the turn counter
-    // const checkForTie = () => {
-    //   let tie = false;
-    //   let boardTotal = 0;
-    //   for (let i = 0; i < 3; i++) {
-    //     for (let j = 0; j < 3; j++) {
-    //       boardTotal += currentBoard[i][j].getValue();
-    //     }
-    //   }
-    //   if (boardTotal > 28) {
-    //     tie = true;
-    //     return tie;
-    //   }
-    // }
 
   const playRound = (playerRow, playerColumn) => {
     do {
@@ -171,15 +146,11 @@ function gameController (
       switchPlayerTurn();
     }
     return results;
-    // playRound();
   };
 
   const reset = () => {
     turnCounter = 0;
-    // playRound.results.win = false;
-    // playRound.results.tie = false;
     activePlayer = players[0];
-    // const newBoard = Gameboard();
     const currentBoard = board.getBoard();
     currentBoard.forEach((row) => {
       row.forEach((cell) =>{
@@ -187,8 +158,6 @@ function gameController (
       })
     })
   }
-
-  // playRound();
 
   return {
     players,
@@ -206,13 +175,10 @@ function ScreenController () {
 
   const boardDiv = document.querySelector('.game-board');
   const resultsArea = document.querySelector('.results-area');
-  // let activePlayer = game.getActivePlayer();
-
 
   const updateScreen = () => {
     // clear the board
     boardDiv.textContent = '';
-    // resultsArea.textContent = '';
 
     // get the latest version of the board with player input
     const board = game.getBoard();
@@ -264,7 +230,7 @@ function ScreenController () {
     if (player.name == 'Player 1') {
     scoreOne.textContent = player.score + 1;
     player.score++;
-    } else {
+    } else if (player.name == 'Player 2') {
     scoreTwo.textContent = player.score + 1;
     player.score++;
     }
