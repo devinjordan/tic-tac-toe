@@ -49,14 +49,6 @@ function makeCell() {
   };
 };
 
-function newPlayer (marker) {
-  let score = 0;
-  return {
-    marker,
-    score
-  };
-};
-
 function gameController (
   playerOneName = "Player 1",
   playerTwoName = "Player 2",
@@ -72,10 +64,12 @@ function gameController (
     {
       name: playerOneName,
       marker: '',
+      score: 0,
     },
     {
       name: playerTwoName,
       marker: '',
+      score: 0,
     },
   ];
 
@@ -160,7 +154,7 @@ function gameController (
     let results = {
       win: false,
       tie: false,
-      player: activePlayer.name,
+      player: activePlayer,
     }
 
     if (checkForWin()) {
@@ -243,9 +237,10 @@ function ScreenController () {
     
     // inform win and reset
     if (result.win == true) {
-      console.log(`${result.player}, you have won!`);
+      console.log(`${result.player.name}, you have won!`);
       addResetButton();
       boardDiv.removeEventListener('click', clickHandlerBoard);
+      updateScore(result.player);
 
     } else if (result.tie == true) {
       console.log('Tie game!');
@@ -255,6 +250,19 @@ function ScreenController () {
     updateScreen();
   }
   boardDiv.addEventListener('click', clickHandlerBoard);
+
+  function updateScore (player) {
+    const scoreOne = resultsArea.querySelector('#score-one');
+    const scoreTwo = resultsArea.querySelector('#score-two');
+
+    if (player.name == 'Player 1') {
+    scoreOne.textContent = player.score + 1;
+    player.score++;
+    } else {
+    scoreTwo.textContent = player.score + 1;
+    player.score++;
+    }
+  }
 
   function addResetButton () {
     const reset = document.createElement('button');
