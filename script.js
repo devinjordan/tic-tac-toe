@@ -15,7 +15,7 @@ const Gameboard = function () {
   const markSpot = (row, column, player) => {
     let marked = false;
     const currentSpot = board[row][column].getValue();
-    if (currentSpot === 0) {
+    if (currentSpot === "") {
       board[row][column].addMark(player);
       marked = true;
     } else {
@@ -26,21 +26,16 @@ const Gameboard = function () {
 
   const getBoard = () => board;
 
-  const printBoard = () => {
-    const boardWithMarks = board.map((row) => row.map((cell) => cell.getValue()));
-    console.log(boardWithMarks);
-  }
 
   return {
     getBoard,
-    printBoard,
     markSpot,
   }
 
 };
 
 function makeCell() {
-  let value = 0;
+  let value = "";
 
   const addMark = (player) => {
     value = player;
@@ -92,10 +87,6 @@ function gameController (
 
   const getActivePlayer = () => activePlayer;
 
-  const printNewRound = () => {
-    board.printBoard();
-    console.log(`${activePlayer.name}'s turn.`);
-  }
 
   // const promptPlayer = () => {
   //   const playerColumn = parseInt(prompt(`${getActivePlayer().name}, select a column.`));
@@ -184,7 +175,6 @@ function gameController (
     }
     if (results.win == false && results.tie == false) {
       switchPlayerTurn();
-      printNewRound();
     }
     return results;
     // playRound();
@@ -199,12 +189,11 @@ function gameController (
     const currentBoard = board.getBoard();
     currentBoard.forEach((row) => {
       row.forEach((cell) =>{
-        cell.addMark(0);
+        cell.addMark("");
       })
     })
   }
 
-  // printNewRound();
   // playRound();
 
   return {
