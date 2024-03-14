@@ -113,19 +113,22 @@ function gameController (
   }
 
   const playRound = (playerRow, playerColumn) => {
-    do {
-      if (board.markSpot(playerRow, playerColumn, activePlayer.marker)) {
-        break;
-      } else {
-        return;
-      };
-    } while (true);
-
     let results = {
       win: false,
       tie: false,
       player: activePlayer,
+      error: false,
     }
+    
+    do {
+      if (board.markSpot(playerRow, playerColumn, activePlayer.marker)) {
+        break;
+      } else {
+        results.error = true;
+        return results;
+      };
+    } while (true);
+
 
     if (checkForWin()) {
       results.win = true;
@@ -210,6 +213,12 @@ function ScreenController () {
       console.log('Tie game!');
       addResetButton(result.player);
       boardDiv.removeEventListener('click', clickHandlerBoard);
+
+    } else if (result.error == true) {
+      boardDiv.style.backgroundColor = 'red';
+      
+    } else if (result.error == false) {
+      boardDiv.style.backgroundColor = 'white';
     };
     updateScreen();
   }
