@@ -196,6 +196,8 @@ function gameController (
     getActivePlayer,
     getBoard: board.getBoard,
     reset,
+    playerOneName,
+    playerTwoName,
   };
 }
 
@@ -244,7 +246,7 @@ function ScreenController () {
 
     } else if (result.tie == true) {
       console.log('Tie game!');
-      addResetButton();
+      addResetButton(result.player);
       boardDiv.removeEventListener('click', clickHandlerBoard);
     };
     updateScreen();
@@ -254,6 +256,10 @@ function ScreenController () {
   function updateScore (player) {
     const scoreOne = resultsArea.querySelector('#score-one');
     const scoreTwo = resultsArea.querySelector('#score-two');
+
+    // initializing score for losing player
+    scoreOne.textContent = 0;
+    scoreTwo.textContent = 0;
 
     if (player.name == 'Player 1') {
     scoreOne.textContent = player.score + 1;
@@ -286,14 +292,27 @@ function ScreenController () {
   // player marker selection and load game board
   const selectDiv = document.querySelector('.selection');
   const selectionButtons = document.querySelectorAll('.selector');
+  const playerOneTitle = resultsArea.querySelector('#player-one');
+  const playerTwoTitle = resultsArea.querySelector('#player-two');
+
   selectionButtons.forEach((button) => {
     button.addEventListener('click', () => {
+      playerOne = game.players[0];
+      playerTwo = game.players[1];
       if (button.id == 'X') {
-        game.players[0].marker = 'X';
-        game.players[1].marker = 'O';
+        playerOne.name = 'Player X';
+        playerTwo.name = 'Player O';
+        playerOne.marker = 'X';
+        playerOneTitle.textContent = playerOne.name;
+        playerTwo.marker = 'O';
+        playerTwoTitle.textContent = playerTwo.name;
       } else {
-        game.players[0].marker = 'O';
-        game.players[1].marker = 'X';
+        playerOne.name = 'Player O';
+        playerTwo.name = 'Player X';
+        playerOne.marker = 'O';
+        playerOneTitle.textContent = playerOne.name;
+        playerTwo.marker = 'X';
+        playerTwoTitle.textContent = playerTwo.name;
       }
       updateScreen();
       selectDiv.style.height = '0px';
