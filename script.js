@@ -176,6 +176,9 @@ function ScreenController () {
   const boardDiv = document.querySelector('.game-board');
   const resultsArea = document.querySelector('.results-area');
 
+  const playerOne = game.players[0];
+  const playerTwo = game.players[1];
+
   const updateScreen = () => {
     // clear the board
     boardDiv.textContent = '';
@@ -224,13 +227,15 @@ function ScreenController () {
     const scoreTwo = resultsArea.querySelector('#score-two');
 
     // initializing score for losing player
-    scoreOne.textContent = 0;
-    scoreTwo.textContent = 0;
+    if (playerOne.score == 0 && playerTwo.score == 0) {
+      scoreOne.textContent = 0;
+      scoreTwo.textContent = 0;
+    }
 
-    if (player.name == 'Player 1') {
+    if (player.name == playerOneTitle.textContent) {
     scoreOne.textContent = player.score + 1;
     player.score++;
-    } else if (player.name == 'Player 2') {
+    } else if (player.name == playerTwoTitle.textContent) {
     scoreTwo.textContent = player.score + 1;
     player.score++;
     }
@@ -263,8 +268,6 @@ function ScreenController () {
 
   selectionButtons.forEach((button) => {
     button.addEventListener('click', () => {
-      playerOne = game.players[0];
-      playerTwo = game.players[1];
       if (button.id == 'X') {
         playerOne.name = 'Player X';
         playerTwo.name = 'Player O';
