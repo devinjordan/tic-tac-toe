@@ -1,4 +1,11 @@
 # tic-tac-toe
+[Live Preview](https://devinjordan.github.io/tic-tac-toe/)
+
+## Skills Honed
+- Javascript factory functions
+- CSS Variables
+- DOM Manipulation
+- Javascript logic & array methods
 
 ## Issues I Struggled With
 - Had a major bug for a while with the 'checkForWin' function in script.js.
