@@ -17,8 +17,6 @@ const Gameboard = function () {
     if (currentSpot === "") {
       board[row][column].addMark(player);
       marked = true;
-    } else {
-      console.log('That spot is taken!');
     }
     return marked;
   }
@@ -182,6 +180,8 @@ function ScreenController () {
 
     // get the latest version of the board with player input
     const board = game.getBoard();
+    const gameBoardDiv = document.querySelector('.game-board');
+    gameBoardDiv.style.border = '.25rem solid var(--light-color)';
 
     // display the updated board
     board.forEach((row, rowIndex) => {
@@ -193,8 +193,8 @@ function ScreenController () {
         cellButton.dataset.column = colIndex;
         cellButton.textContent = cell.getValue();
         boardDiv.appendChild(cellButton);
-      })
-    })
+      });
+    });
   }
 
   function clickHandlerBoard(e) {
@@ -216,9 +216,9 @@ function ScreenController () {
 
     } else if (result.error == true) {
       boardDiv.style.backgroundColor = 'red';
-      
+
     } else if (result.error == false) {
-      boardDiv.style.backgroundColor = 'white';
+      boardDiv.style.backgroundColor = 'var(--light-color)';
     };
     updateScreen();
   }
@@ -267,6 +267,7 @@ function ScreenController () {
   const selectionButtons = document.querySelectorAll('.selector');
   const playerOneTitle = resultsArea.querySelector('#player-one');
   const playerTwoTitle = resultsArea.querySelector('#player-two');
+  const body = document.querySelector('body');
 
   selectionButtons.forEach((button) => {
     button.addEventListener('click', () => {
@@ -286,7 +287,7 @@ function ScreenController () {
         playerTwoTitle.textContent = playerTwo.name;
       }
       updateScreen();
-      selectDiv.style.height = '0px';
+      body.removeChild(selectDiv);
     });
   });
 
